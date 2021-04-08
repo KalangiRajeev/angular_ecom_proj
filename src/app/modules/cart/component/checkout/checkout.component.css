@@ -1,0 +1,14 @@
+mat-form-field {
+    width: fill;
+}
+
+mat-radio-group {
+    display: flex; 
+    width: fill;
+}
+
+/* @media (min-width: 768px) {
+    mat-form-field {
+        width: 50%;
+    }
+} */

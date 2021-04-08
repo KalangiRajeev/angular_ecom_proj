@@ -1,0 +1,112 @@
+<header id="header" class="fixed-top d-flex align-items-center  header-transparent ">
+    <div class="container d-flex align-items-center">
+
+
+        <div class="logo mr-auto">
+            <h1>
+                <a href="#" routerLink="/" class="navbar-brand">
+                    JR Mini Store
+                </a>
+            </h1>
+        </div>
+
+        <nav class="nav-menu d-none d-lg-block">
+            <ul>
+                <li>
+                    <a routerLink='/'>
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#" routerLink='/products'>
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">store</mat-icon>
+                        Store
+                    </a>
+                </li>
+                <li *ngIf="loginService.currentUser === null">
+                    <a href="#" (click)="loginService.loginWithGoogle()">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">login</mat-icon> 
+                        Google SignIn 
+                    </a>
+                </li>
+                <li *ngIf="loginService.currentUser !== null">
+                    <a href="#" routerLink='/login'>
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">face</mat-icon>
+                        {{loginService.currentUser.displayName.toUpperCase()}}
+                    </a>
+                </li>
+                <li *ngIf="loginService.adminUser !== null" class="drop-down nav-item">
+                    <a class="nav-link waves-light" href="">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">admin_panel_settings</mat-icon>
+                        Admin
+                    </a>
+                    <ul>
+                        <li><a href="#" routerLink='/productspage'>
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">category</mat-icon>
+                                Products
+                            </a></li>
+                        <li><a href="#" routerLink='/orders'>
+                                <mat-icon aria-hidden="false" aria-label="Example home icon">list_alt</mat-icon> Orders
+                            </a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" routerLink='/cartdetail'>
+                        <mat-icon aria-hidden="false" aria-label="Example home icon">add_shopping_cart</mat-icon>
+                        <span *ngIf="cartService.itemCount > 0">
+                            {{cartService.itemCount}} item(s)
+                        </span>
+                        <span *ngIf="cartService.itemCount === 0">
+                            (empty)
+                        </span>
+                        {{cartService.cartPrice | currency: 'INR'}} 
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- .nav-menu -->
+    </div>
+
+    <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon aria-hidden="false" aria-label="Example home icon">menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink='/'>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon> Home
+        </button>
+        <button mat-menu-item routerLink='/products'>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">store</mat-icon> Store
+        </button>
+        <button mat-menu-item (click)="loginService.loginWithGoogle()" *ngIf="loginService.currentUser === null">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">login</mat-icon> Google SignIn
+        </button>
+        <button mat-menu-item routerLink='/login' *ngIf="loginService.currentUser !== null">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">face</mat-icon>
+            {{loginService.currentUser.displayName.toUpperCase()}}
+        </button>
+        <button mat-menu-item *ngIf="loginService.adminUser !== null" routerLink='/productspage'>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">category
+            </mat-icon>
+            Products
+        </button>
+        <button mat-menu-item *ngIf="loginService.adminUser !== null" routerLink='/orders'>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">list_alt
+            </mat-icon> Orders
+        </button>
+        <button mat-menu-item routerLink='/cartdetail'>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">add_shopping_cart</mat-icon>
+            <span *ngIf="cartService.itemCount > 0">
+                {{cartService.itemCount}} item(s)
+            </span>
+            <span *ngIf="cartService.itemCount === 0">
+                (empty)
+            </span>
+            {{cartService.cartPrice | currency: 'INR'}}
+        </button>
+
+    </mat-menu>
+
+</header>
+<!-- End Header -->

@@ -1,0 +1,134 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col">
+            <h1 *ngIf="editing">Edit Product</h1>
+            <h1 *ngIf="!editing">Add new Product</h1>
+        </div>
+    </div>
+
+    <!-- vertical stepper -->
+    <div class="row">
+        <div class="col-sm-6">
+            <mat-vertical-stepper linear #stepper>
+                <mat-step>
+                    <div>
+                        <ng-template matStepLabel>
+                            <h4>Select Image</h4>
+                        </ng-template>
+                        <input mat-raised-button type="file" id="image" name="image" accept="image/*"
+                            (change)="detectFiles($event)" />
+                       
+                    </div>
+                    <div>
+                        <button mat-raised-button color="accent" class="mt-2" (click)="uploadSingleImage()">
+                            <mat-icon>publish</mat-icon>Upload
+                        </button>
+                    </div>
+                    <div *ngIf="productsService.downloadURL!== null">
+                        <img class="img-thumbnail" src="{{productsService.downloadURL || product.imageUrl}}"
+                            alt="{{productsService.downloadURL}}">
+                    </div>
+                    <div>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+
+                <mat-step>
+                    <form [formGroup]="categoryform" class="formGroup">
+                        <ng-template matStepLabel>
+                            <h4>Add Category</h4>
+                        </ng-template>
+                        <div>
+                            <mat-form-field>
+                                <mat-label>Add new Category</mat-label>
+                                <input matInput #category maxlength="20" type="text"
+                                    placeholder="Fruits, Groceries etc.,"
+                                    formControlName="name">
+                                <mat-hint align="start">Enter new Category</mat-hint>
+                                <mat-hint align="end">{{category.value.length}}/20</mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div>
+                            <button mat-raised-button color="accent" (click)="saveCategory()">Save Category</button>
+                            <h1 *ngIf="categorySaved">Category Saved</h1>
+                        </div>
+                    </form>
+                    <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                    </div>
+                </mat-step>
+            </mat-vertical-stepper>
+        </div>
+        <div class="col-sm-6">
+            <form [formGroup]="productform">
+                <mat-vertical-stepper>
+                    <mat-step>
+                        <ng-template matStepLabel>
+                            <h4>Product Inputs</h4>
+                        </ng-template>
+                        <mat-form-field>
+                            <mat-label>Product Name</mat-label>
+                            <input matInput #name formControlName="name" maxlength="20" type="text"
+                                placeholder="Apples, Bananas etc.," required>
+                            <mat-hint align="start">Enter new product name</mat-hint>
+                            <mat-hint align="end">{{name.value.length}}/20</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Select Category</mat-label>
+                            <mat-select formControlName="category">
+                                <mat-option *ngFor="let category of productsService.categories" [value]="category.name">
+                                    {{category.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Product Description</mat-label>
+                            <input matInput #description formControlName="description" maxlength="100" type="text"
+                                placeholder="Kashmiri Apples fine Quality" required>
+                            <mat-hint align="start">Enter product description</mat-hint>
+                            <mat-hint align="end">{{description.value.length}}/100</mat-hint>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                        </div>
+                    </mat-step>
+                    <mat-step>
+                        <ng-template matStepLabel>
+                            <h4>Price, Units and other Details</h4>
+                        </ng-template>
+                        <mat-form-field>
+                            <mat-label>Product Price</mat-label>
+                            <input matInput #price formControlName="price" maxlength="6" type="number"
+                                placeholder="100" required>
+                            <mat-hint align="start">Enter product price</mat-hint>
+                            <mat-hint align="end">{{price.value.length}}/6</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Product Units</mat-label>
+                            <input matInput #units formControlName="units" maxlength="6" type="text"
+                                placeholder="Kgs" required>
+                            <mat-hint align="start">Enter product units</mat-hint>
+                            <mat-hint align="end">{{units.value.length}}/6</mat-hint>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Product Image Url</mat-label>
+                            <input matInput #imageUrl formControlName="imageUrl" type="text"
+                                placeholder="https://www.firebase.com/..." required>
+                            <mat-hint align="start">Enter product ImageUrl</mat-hint>
+                            <mat-hint align="end">{{imageUrl.value.length}}/6</mat-hint>
+                        </mat-form-field>
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button type="submit" [disabled]="!productform.valid && productSaved" (click)="saveForm()">Save
+                                Product</button>
+                            <h1 *ngIf="productSaved">Product Saved</h1>
+                        </div>
+                    </mat-step>
+                </mat-vertical-stepper>
+            </form>
+        </div>
+    </div>
+</div>

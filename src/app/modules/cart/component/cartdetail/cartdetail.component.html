@@ -1,0 +1,66 @@
+<div class="row m-auto justify-content-center">
+    <div class="col">
+        <h1>Cart Summary</h1>
+       
+        <!-- Bootstrap Table -->
+        <table class="table table-borderless shadow rounded" [ngStyle]="{'color': getColor()}">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">Quantity</th>
+                    <th class="text-center">Product</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="cartService.cartLines.length === 0">
+                    <td colspan="4">
+                        <h3>Your Cart is Empty</h3>
+                    </td>
+                </tr>
+                <tr *ngFor="let cartLine of cartService.cartLines">
+                    <td>
+                        <input type="number" min="1" class="form-control-sm" style="width:4em;"
+                            [value]="cartLine.quantity"
+                            (change)="cartService.updateQuantity(cartLine.product, $event.target.value)" />
+                        {{cartLine.product.units}}
+                    </td>
+                    <td class="text-left">
+                        <button mat-button color="warn" (click)="cartService.removeLine(cartLine.product.id)">
+                            <mat-icon>delete_forever</mat-icon>
+                        </button>
+                        {{cartLine.product.name}}
+                    </td>
+                    <td class="text-right">
+                        {{cartLine.product.price | currency: 'INR'}}/{{cartLine.product.units}}
+                    </td>
+
+                    <td class="text-right">
+                        {{ (cartLine.lineTotal) | currency: 'INR'}}
+                    </td>
+                    
+                </tr>
+            </tbody>
+            <tfoot>
+                <th class="text-right" colspan="3">
+                    TOTAL
+                </th>
+                <th class="text-right" colspan="1">
+                    {{cartService.cartPrice | currency: 'INR'}}
+                </th>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+   
+            <button mat-raised-button color="accent" class="ml-5 mr-auto" 
+            routerLink='/products'>
+            <mat-icon>keyboard_arrow_left</mat-icon> Continue Shopping
+            </button>
+            <button mat-raised-button color="accent" class="btn btn-secondary ml-auto mr-5" [disabled]="cartService.cartLines.length === 0"
+                routerLink='/checkout'>
+                Checkout <mat-icon>keyboard_arrow_right</mat-icon>
+            </button>
+</div>

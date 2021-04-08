@@ -1,0 +1,42 @@
+.pro{
+  display: flex;
+  align-content: center;
+}
+
+img { 
+  width: 286px;
+  height: 180px;
+  object-fit: cover;
+}
+
+#btn-category button:hover {
+  transform: scale(1.05);
+  transition: all .5s;
+}
+
+#item-card:hover {
+  transform: scale(1.01);
+  transition: all .5s;
+}
+
+/* .mat-drawer-container {
+  margin-top: 2rem;
+ } */
+
+/* .mat-drawer-sidenav-content {
+  justify-content: flex-start;
+  padding: 1rem;
+} */
+
+.mat-drawer-sidenav {
+  width: 200px;
+  height: 100%;
+  justify-content: center;
+}
+
+btn-container {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+}
+

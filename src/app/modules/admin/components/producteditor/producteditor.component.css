@@ -1,0 +1,9 @@
+img {
+  width: 286px;
+  height: 180px;
+  object-fit: cover;
+}
+
+mat-form-field {
+  width: fill;
+}

@@ -1,0 +1,102 @@
+<div class="container-fluid">
+    <div class="row  justify-content-center">
+        <div class="form-check m-2">
+            <label for="shipped" class="form-check-label">
+                <input type="checkbox" class="form-check-input" [(ngModel)]="isShipped">
+                Display Shipped Orders
+            </label>
+        </div>
+    </div>
+    <div class="row justify-content-center ml-auto mr-auto">
+        <table class="table table-sm table-borderless m-4 shadow rounded" [ngStyle]="{'color': getColor()}">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Contact & Order Status</th>
+                    <th></th>
+                    <th colspan="3">Cart Summary</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="getOrders().length === 0">
+                    <td colspan="5">There are no orders</td>
+                </tr>
+                <ng-template ngFor let-o [ngForOf]="getOrders()">
+                    <tr>
+                        <td>{{o.shippingAddress.name}}, <br> {{o.shippingAddress.phone}}, <br>
+                            {{o.isShipped ? 'Shipped' : 'Not Shipped' }} & <br>
+                            {{o.isPaymentCleared ? 'Payment Cleared' : 'Not Payment Cleared'}}
+                        </td>
+                        <td></td>
+                        <th class="text-primary">Product</th>
+                        <th class="text-primary">Quantity</th>
+                        <th class="text-right text-primary">Price</th>
+
+                    </tr>
+                    <tr *ngFor="let line of o.cart">
+                        <td></td>
+                        <td colspan="1" class="text-center">
+                            <button mat-button color="warn" [disabled]="o.isShipped"
+                                (click)="deleteCartLine(o, line.product.id)">
+                                <mat-icon>delete_forever</mat-icon>
+                            </button>
+                        </td>
+                        <td>{{line.product.name}}</td>
+                        <td>{{line.quantity}}{{line.product.units}} ({{line.product.price | currency: 'INR'}})</td>
+                        <td class="text-right">
+                            {{line.quantity * line.product.price | currency: 'INR'}} </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <h6>Order placed on</h6>
+                        </td>
+                        <td colspan="2">
+                            <h6> {{o.orderPlacedOn}} </h6>
+                        </td>
+                        <td colspan="1" class="text-right">
+                            <h5>TOTAL</h5>
+                        </td>
+                        <td colspan="1" class="text-right">
+                            <h5>{{o.cartPrice | currency: 'INR'}}</h5>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th colspan="5">Shipping Address :
+                            {{o.shippingAddress.houseNumber}},
+                            {{o.shippingAddress.streetAddress}},
+                            {{o.shippingAddress.landMark}},
+                            {{o.shippingAddress.city}},
+                            {{o.shippingAddress.state}},
+                            {{o.shippingAddress.pincode}},
+                            {{o.shippingAddress.country}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <td colspan="1">
+                            <button mat-raised-button color="warn" class="btn m-1" (click)="deleteOrder(o.orderId)"
+                                [disabled]="o.isShipped">
+                                 <mat-icon>delete_forever</mat-icon>
+                            </button>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="1">
+                            <button mat-raised-button color="primary"  class="btn m-1" (click)="markShipped(o)"
+                                [disabled]="o.isShipped">
+                                <mat-icon>local_shipping</mat-icon>
+                            </button>
+                        </td>
+                        <td colspan="1">
+                            <button mat-raised-button color="accent" class="btn m-1 mr-2" (click)="markPaid(o)"
+                                [disabled]="o.isPaymentCleared">
+                                <mat-icon>monetization_on</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </div>
+</div>

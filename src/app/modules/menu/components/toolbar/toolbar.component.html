@@ -1,0 +1,72 @@
+<mat-sidenav-container class="sidenav-container mat-app-background" [ngClass]="{'dark-theme-mode': isDarkTheme}">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+
+    <mat-nav-list>
+      <!-- Side Drawer -->
+      <a mat-list-item routerLink='/'>
+        <mat-icon fontset="material-icons-outlined" class="m-2">home</mat-icon> Home
+      </a>
+      <a mat-list-item routerLink='/products'>
+        <mat-icon fontset="material-icons-outlined" class="m-2">store</mat-icon> Store
+      </a>
+      <a mat-list-item *ngIf="!loginService.currentUser" (click)="loginService.loginWithGoogle()">
+        <mat-icon fontset="material-icons-outlined" class="m-2">login</mat-icon> Google Login
+      </a>
+      <a mat-list-item *ngIf="loginService.currentUser" routerLink='/login'>
+        <mat-icon fontset="material-icons-outlined" class="m-2">face</mat-icon>
+        {{loginService.currentUser.displayName.toUpperCase()}}
+      </a>
+      <a mat-list-item *ngIf="loginService.adminUser" routerLink='/productspage'>
+        <mat-icon fontset="material-icons-outlined" class="m-2">category</mat-icon> Products
+      </a>
+      <a mat-list-item *ngIf="loginService.adminUser" routerLink='/orders'>
+        <mat-icon fontset="material-icons-outlined" class="m-2">list_alt</mat-icon> Orders
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+
+  <mat-sidenav-content>
+    <!-- toolbar -->
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>JR Mini Store</span>
+      <span style="flex:auto;"></span>
+
+      <!-- cart link -->
+      <a mat-button routerLink='/cartdetail' class="ml-auto mr-auto">
+        
+        <span *ngIf="cartService.itemCount > 0">
+          <mat-icon aria-hidden="false">add_shopping_cart_two_tone</mat-icon>
+        </span>
+        <span *ngIf="cartService.itemCount === 0">
+          <mat-icon aria-hidden="false">remove_shopping_cart_two_tone</mat-icon>
+        </span>
+      
+        {{cartService.cartPrice | currency: 'INR'}}
+        <span class="badge badge-pill badge-danger float-right">
+          {{cartService.itemCount}}
+        </span>
+      
+      </a>
+
+      <!-- dark/light theme -->
+      <mat-slide-toggle [(ngModel)]="isDarkTheme" labelPosition="before" (change)="storeThemeSelection()">
+        <!-- <mat-icon>bedtime</mat-icon> -->
+      </mat-slide-toggle>
+
+    </mat-toolbar>
+
+    <!-- Add Content Here -->
+    <!-- for Animated Routes -->
+    <div [@triggerName]="prepareRoute(outlet)">
+      <router-outlet #outlet="outlet"></router-outlet>
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

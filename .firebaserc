@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "mat-ecom-proj": {
+      "hosting": {
+        "mat-ecom-proj": [
+          "mat-ecom-proj"
+        ]
+      }
+    }
+  }
+}

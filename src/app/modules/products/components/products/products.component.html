@@ -1,0 +1,92 @@
+<mat-drawer-container class="mat-drawer-container" autosize>
+    <!-- Side Drawer -->
+    <mat-drawer #drawer class="mat-drawer-sidenav" mode="side">
+        <div id="btn-category">
+            <button mat-flat-button *ngIf="categories !== null" class="btn btn-block m-2 text-left"
+                [class.btn-warning]="selectedCategory === null" (click)="setSelectedCategory()">
+                All Categories
+            </button>
+            <button mat-flat-button *ngFor="let category of categories" class="btn btn-block m-2 text-left"
+                [class.btn-warning]="category.name === selectedCategory" (click)="setSelectedCategory(category.name)">
+                {{ category.name }}
+            </button>
+        </div>
+    </mat-drawer>
+
+    <!-- Produts Container -->
+    <div class="mat-drawer-sidenav-content">
+        <button type="button" mat-button (click)="drawer.toggle()">
+            <i class="material-icons">sync_alt</i>
+        </button>
+
+        <form [formGroup]="searchForm" (ngSubmit)="searchProducts()" class="form-group">
+            <div class="form-row justify-content-center">
+                <div class="col-sm-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="search" placeholder="Search Products..."
+                            formControlName="search">
+                        <button mat-raised-button color="accent" type="submit" class="btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="row pro justify-content-center">
+
+            <!-- cards -->
+
+            
+
+
+            <div class="m-1" *ngFor="let product of products" style="width: 18rem;" id="item-card">
+               
+                <app-card
+                class="m-1" 
+                style="width: 18rem;" id="item-card"
+                [product]="product"
+                (outputEvent)="addProductToCart(product, $event)"
+                ></app-card>
+    
+               
+               
+<!--                
+                <mat-card class="example-card">
+                    <img mat-card-image src="{{product.imageUrl}}" alt="{{product.name}}">
+                    <mat-card-header>
+                        <mat-card-title>
+                            {{ product.name }}
+                        </mat-card-title>
+                        <mat-card-subtitle>
+                            <span class="badge badge-pill float-left text-white bg-danger">
+                                {{product.price | currency: 'INR'}}/{{product.units}}
+                            </span>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content class="ml-3">
+                        <p>
+                            {{product.description}}
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions class="text-right">
+                        <button mat-raised-button color="accent" (click)="addProductToCart(product, quantity)">
+                            Add to <i class="material-icons">add_shopping_cart</i> 
+                        </button>
+                    </mat-card-actions>
+                </mat-card> -->
+
+            </div>
+        </div>
+
+        <!-- Paginator -->
+        <mat-paginator [length]="productsService.products.length" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event">
+        </mat-paginator>
+    </div>
+</mat-drawer-container>
